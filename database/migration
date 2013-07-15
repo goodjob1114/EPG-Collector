@@ -1,0 +1,1 @@
+ CREATE TABLE epgsdotcom_channels(id integer primary key, language text, name text, icon_url text, logo_url text, region text, country text, category text, slug text);

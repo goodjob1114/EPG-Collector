@@ -4,7 +4,7 @@
 class EPG_Channel(object):
     """A Interface Class for EPG"""
 
-    def fetch(self, date = None, day = None, time = None):
+    def fetch(self, utc_date = None, utc_time = None, day = None):
         """Return the EPG of today by default"""
         raise NoImplementedError()
 
