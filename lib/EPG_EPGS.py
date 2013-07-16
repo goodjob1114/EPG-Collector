@@ -5,6 +5,8 @@ import os
 import sys
 import logging
 import sqlite3
+import urllib2
+import xmltv
 
 sys.path.append( os.path.abspath( os.path.dirname(__file__) ) )
 from EPG_Channel import EPG_Channel
@@ -28,16 +30,37 @@ class EPG_EPGS(EPG_Channel):
 
     def fetch(self, utc_date = None, utc_time = None, day = None):
 
-        sql = """
-        SELECT id, name FROM epgsdotcom_channels
-        WHERE language = ?
-        """
-        self.cursor.execute(sql, [("en")])
-
+        region = 'us'
+        sql = "SELECT id, name, slug FROM epgsdotcom_channels WHERE region = '%s'" % region
+        self.cursor.execute(sql)
         channels = self.cursor.fetchall() # a list
+
         for channel in channels[:]: # a tuple
+
             xmltv_url = self.epgs_url + 'checksum=' + self.checksum + '&channel=' + str(channel[0]) # '&days=' + str(days)
-            print u"拿 %s 從 %s" % (channel[1], xmltv_url)
+            xml = urllib2.urlopen(xmltv_url) # a file-like handle
+            epgs = xmltv.read_programmes(xml)
+
+            for epg in epgs:
+
+                name = epg['title'][0][0]
+                utc_date = epg['date']
+                utc_start = epg['start']
+                utc_stop = epg['stop']
+
+                if 'category' in epg.keys():
+                    category = epg['category'][0][0]
+                else:
+                    category = ''
+
+                sql = """
+                INSERT INTO moremote_epgs (name, channel, category, utc_date, utc_start, utc_stop)
+                VALUES ("%s", "%s", "%s", "%s", "%s", "%s")
+                """ % (name, channel[1], category, utc_date, utc_start, utc_stop)
+
+                print sql
+                self.cursor.execute(sql)
+                self.database.commit()
 
 
     def store(self, db_type = None, db_config = None):

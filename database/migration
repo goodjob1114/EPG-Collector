@@ -1,3 +1,24 @@
-CREATE TABLE epgsdotcom_channels(id integer primary key, language text, name text, icon_url text, logo_url text, region text, country text, category text, slug text);
+CREATE TABLE moremote_epgs(
+                            id integer primary key,
+                            name text,
+                            channel text,
+                            utc_date text,
+                            utc_start text,
+                            utc_stop text,
+                            day text,
+                            category text,
+                            comment text
+                        );
 
-CREATE TABLE moremote_epgs(id integer primary key, name text, channel text, utc_date text, utc_start_time text, utc_end_time text, day text);
+CREATE TABLE epgsdotcom_channels(
+                                    id integer primary key,
+                                    language text,
+                                    name text,
+                                    icon_url text,
+                                    logo_url text,
+                                    region text,
+                                    country text,
+                                    category text,
+                                    slug text
+                                );
+
