@@ -11,10 +11,6 @@ EPG 收集器，旨在收集各大電視臺的電子節目單，並儲存到資�
 
 ### EPG Source
 
-- HBO
-- CNN
-- BBC
-- FOX
-- CCTV
-- NEXTTV
-- MOD
+- MOD： http://mod.cht.com.tw/channel/epg.php
+- NEXTTV： http://www.nexttv.com.tw/program
+- epgs.com： http://epgs.com
