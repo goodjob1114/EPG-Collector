@@ -5,6 +5,7 @@ import re
 import os
 import sys
 import urllib2
+import datetime
 from BeautifulSoup import BeautifulSoup 
 
 if __name__ == '__main__':
@@ -18,13 +19,16 @@ if __name__ == '__main__':
     table_news = tables[0]
     table_mix = tables[1]
 
-     
+    th = table_news.findAll('th')
 
-    """"
-    t = etree.XML(table_news)
-    rows = iter(t)
-    headers = [col.text for col in next(rows)]
-    for row in rows:
-        values = [col.text for col in row]
-        print dict(zip(headers, values))
-    """"
+    week_date = []
+    week_day = []
+
+    for t in th:
+        # t is a BeautifulSoup.Tag object
+        date, day = t.string.strip().split("&nbsp;")
+        week_date.append(str(datetime.date.today().year) + date.replace('/', ''))
+        week_day.append(day)
+
+    print week_date
+    print week_day
